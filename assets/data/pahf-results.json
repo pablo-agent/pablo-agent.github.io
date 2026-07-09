@@ -1,0 +1,254 @@
+{
+  "setup": {
+    "benchmarks": [
+      "PAHF-Embodied Manipulation",
+      "PAHF-Online Shopping"
+    ],
+    "users": 20,
+    "rounds_per_user": 30,
+    "split": "80% online learning, 20% heldout evaluation",
+    "action_space": {
+      "memory_modes": 5,
+      "tool_modes": 6,
+      "answer_styles": 6,
+      "total_before_safety": 180
+    },
+    "cost_weight_lambda": 1.0,
+    "reward_noise_sigma": 0.05,
+    "clarification_penalty": 0.08,
+    "post_correction_penalty": 0.15,
+    "drift_stress_test": "Preference drift introduced at round 15"
+  },
+  "heldout": [
+    {
+      "policy": "Rule-Only",
+      "embodied_reward": 0.3216,
+      "embodied_success": 0.055,
+      "embodied_regret": 0.7551,
+      "shopping_reward": -0.5893,
+      "shopping_success": 0.077,
+      "shopping_regret": 0.7149
+    },
+    {
+      "policy": "Global LinTS",
+      "embodied_reward": 0.7574,
+      "embodied_success": 0.005,
+      "embodied_regret": 0.87,
+      "shopping_reward": 0.6287,
+      "shopping_success": 0.04,
+      "shopping_regret": 0.7917
+    },
+    {
+      "policy": "Per-User LinTS",
+      "embodied_reward": 0.5866,
+      "embodied_success": 0.023,
+      "embodied_regret": 0.8924,
+      "shopping_reward": 0.4612,
+      "shopping_success": 0.01,
+      "shopping_regret": 0.9766
+    },
+    {
+      "policy": "Non-Factorized LinTS",
+      "embodied_reward": 0.644,
+      "embodied_success": 0.02,
+      "embodied_regret": 0.9296,
+      "shopping_reward": 0.1896,
+      "shopping_success": 0.012,
+      "shopping_regret": 0.8863
+    },
+    {
+      "policy": "PAB-F (no onboarding)",
+      "embodied_reward": 0.647,
+      "embodied_success": 0.052,
+      "embodied_regret": 0.9872,
+      "shopping_reward": 0.4432,
+      "shopping_success": 0.082,
+      "shopping_regret": 0.8893
+    },
+    {
+      "policy": "PAB-F (no promotion)",
+      "embodied_reward": 0.5799,
+      "embodied_success": 0.132,
+      "embodied_regret": 0.5422,
+      "shopping_reward": 0.3542,
+      "shopping_success": 0.032,
+      "shopping_regret": 0.7302
+    },
+    {
+      "policy": "PAB-F (no cost)",
+      "embodied_reward": 0.5801,
+      "embodied_success": 0.078,
+      "embodied_regret": 0.6043,
+      "shopping_reward": 0.4223,
+      "shopping_success": 0.023,
+      "shopping_regret": 0.7694
+    },
+    {
+      "policy": "PAB-F (full)",
+      "embodied_reward": 0.6214,
+      "embodied_success": 0.078,
+      "embodied_regret": 0.6639,
+      "shopping_reward": 0.5193,
+      "shopping_success": 0.133,
+      "shopping_regret": 0.6863
+    }
+  ],
+  "component_accuracy": [
+    {
+      "policy": "Rule-Only",
+      "embodied_acc_m": 0.337,
+      "embodied_acc_t": 0.265,
+      "embodied_acc_s": 0.302,
+      "shopping_acc_m": 0.292,
+      "shopping_acc_t": 0.282,
+      "shopping_acc_s": 0.27
+    },
+    {
+      "policy": "Global LinTS",
+      "embodied_acc_m": 0.202,
+      "embodied_acc_t": 0.233,
+      "embodied_acc_s": 0.052,
+      "shopping_acc_m": 0.245,
+      "shopping_acc_t": 0.217,
+      "shopping_acc_s": 0.23
+    },
+    {
+      "policy": "Per-User LinTS",
+      "embodied_acc_m": 0.197,
+      "embodied_acc_t": 0.198,
+      "embodied_acc_s": 0.213,
+      "shopping_acc_m": 0.328,
+      "shopping_acc_t": 0.115,
+      "shopping_acc_s": 0.137
+    },
+    {
+      "policy": "Non-Factorized",
+      "embodied_acc_m": 0.168,
+      "embodied_acc_t": 0.243,
+      "embodied_acc_s": 0.16,
+      "shopping_acc_m": 0.278,
+      "shopping_acc_t": 0.273,
+      "shopping_acc_s": 0.192
+    },
+    {
+      "policy": "PAB-F (no onboarding)",
+      "embodied_acc_m": 0.172,
+      "embodied_acc_t": 0.208,
+      "embodied_acc_s": 0.142,
+      "shopping_acc_m": 0.253,
+      "shopping_acc_t": 0.19,
+      "shopping_acc_s": 0.13
+    },
+    {
+      "policy": "PAB-F (no promotion)",
+      "embodied_acc_m": 0.313,
+      "embodied_acc_t": 0.36,
+      "embodied_acc_s": 0.48,
+      "shopping_acc_m": 0.268,
+      "shopping_acc_t": 0.308,
+      "shopping_acc_s": 0.26
+    },
+    {
+      "policy": "PAB-F (no cost)",
+      "embodied_acc_m": 0.203,
+      "embodied_acc_t": 0.295,
+      "embodied_acc_s": 0.355,
+      "shopping_acc_m": 0.347,
+      "shopping_acc_t": 0.157,
+      "shopping_acc_s": 0.287
+    },
+    {
+      "policy": "PAB-F (full)",
+      "embodied_acc_m": 0.182,
+      "embodied_acc_t": 0.322,
+      "embodied_acc_s": 0.432,
+      "shopping_acc_m": 0.408,
+      "shopping_acc_t": 0.305,
+      "shopping_acc_s": 0.313
+    }
+  ],
+  "clarification_correction": [
+    {
+      "policy": "Rule-Only",
+      "embodied_clarify": 0.348,
+      "embodied_correct": 0,
+      "shopping_clarify": 0.405,
+      "shopping_correct": 0.042
+    },
+    {
+      "policy": "PAB-F (no onboarding)",
+      "embodied_clarify": 0.047,
+      "embodied_correct": 0.098,
+      "shopping_clarify": 0,
+      "shopping_correct": 0.078
+    },
+    {
+      "policy": "PAB-F (no promotion)",
+      "embodied_clarify": 0.093,
+      "embodied_correct": 0.117,
+      "shopping_clarify": 0,
+      "shopping_correct": 0.105
+    },
+    {
+      "policy": "PAB-F (no cost)",
+      "embodied_clarify": 0.075,
+      "embodied_correct": 0.158,
+      "shopping_clarify": 0,
+      "shopping_correct": 0.045
+    },
+    {
+      "policy": "PAB-F (full)",
+      "embodied_clarify": 0.067,
+      "embodied_correct": 0.188,
+      "shopping_clarify": 0,
+      "shopping_correct": 0.07
+    }
+  ],
+  "drift": [
+    {
+      "policy": "Rule-Only",
+      "embodied_recovery": 249,
+      "embodied_post_success": 0.067,
+      "embodied_post_reward": 0.3189,
+      "shopping_recovery": 184,
+      "shopping_post_success": 0.079,
+      "shopping_post_reward": -0.5819
+    },
+    {
+      "policy": "PAB-F (no onboarding)",
+      "embodied_recovery": 484,
+      "embodied_post_success": 0.051,
+      "embodied_post_reward": 0.5422,
+      "shopping_recovery": 636,
+      "shopping_post_success": 0.026,
+      "shopping_post_reward": 0.3145
+    },
+    {
+      "policy": "PAB-F (no promotion)",
+      "embodied_recovery": 303,
+      "embodied_post_success": 0.063,
+      "embodied_post_reward": 0.4799,
+      "shopping_recovery": 544,
+      "shopping_post_success": 0.036,
+      "shopping_post_reward": 0.3037
+    },
+    {
+      "policy": "PAB-F (no cost)",
+      "embodied_recovery": 96,
+      "embodied_post_success": 0.094,
+      "embodied_post_reward": 0.4634,
+      "shopping_recovery": 312,
+      "shopping_post_success": 0.058,
+      "shopping_post_reward": 0.2802
+    },
+    {
+      "policy": "PAB-F (full)",
+      "embodied_recovery": 487,
+      "embodied_post_success": 0.068,
+      "embodied_post_reward": 0.481,
+      "shopping_recovery": 572,
+      "shopping_post_success": 0.06,
+      "shopping_post_reward": 0.3063
+    }
+  ]
+}

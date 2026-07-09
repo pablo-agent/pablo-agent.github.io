@@ -1,0 +1,16 @@
+flowchart LR
+  A[User request X_t<br/>History H_{t-1}<br/>Onboarding Q] --> B[Context constructor Ψ]
+  B --> C[Safe action filter<br/>A_t = A_safe(C_t, Q^hard)]
+  C --> D[Recover posterior<br/>μ_t, Σ_t]
+  D --> E[Sample θ~ from<br/>N(μ_t, Σ_t)]
+  E --> F[Score factorized actions<br/>a=(m, τ, s)]
+  F --> G[Choose argmax<br/>b(C,a)+φ(C,a)^T θ~ - λ cost(C,a)]
+  G --> H[Host agent executes<br/>memory/tool/clarify/respond]
+  H --> I[Observe feedback y_t]
+  I --> J[Residual reward<br/>r_t = y_t - b(C,a_t) + λ cost(C,a_t)]
+  J --> K[Bayesian update<br/>Λ, h, μ, Σ]
+  K --> L{Confidence ≥ ρ<br/>and evidence ≥ n_min?}
+  L -- yes --> M[Promote stable preference<br/>to memory/prompt policy]
+  L -- no --> N[Continue]
+  M --> N
+  N --> B

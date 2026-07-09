@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personalized Agent Bandits with Factorized Orchestration Actions</title>
+    <meta name="description" content="PAB-F is a lightweight Bayesian bandit layer for personalizing how an agent uses memory, tools, clarification, and answer style.">
+    <meta property="og:title" content="Personalized Agent Bandits with Factorized Orchestration Actions">
+    <meta property="og:description" content="A lightweight Bayesian bandit layer for personalizing agent orchestration actions under safety and feasibility constraints.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/img/pabf-flow.svg">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary">
+        <a href="#overview">Overview</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#citation">Citation</a>
+      </nav>
+      <div class="hero">
+        <p class="eyebrow">PAB-F · Personalized Agent Bandit with Factorized Actions</p>
+        <h1>Personalized Agent Bandits with Factorized Orchestration Actions</h1>
+        <p class="tagline">A lightweight Bayesian bandit layer that personalizes how an agent uses memory, tools, clarification, and answer style.</p>
+        <p class="pitch">PAB-F learns user-specific residual orchestration preferences from partial feedback while enforcing hard safety and feasibility constraints.</p>
+        <div class="button-row" aria-label="Project links">
+          <a class="button primary" href="#citation">Manuscript coming soon</a>
+          <a class="button" href="https://github.com/Jindiande/personalized_agent_page">Page source</a>
+          <a class="button" href="#results">Results</a>
+          <a class="button" href="#citation">Citation</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Overview</p>
+          <h2>Personalizing the orchestration layer</h2>
+        </div>
+        <div class="overview-grid">
+          <div>
+            <p class="lead">PAB-F personalizes the orchestration layer of an agent: when to use memory, when to call tools, when to ask or confirm, and how to shape the answer.</p>
+            <p>Modern personal agents repeatedly choose intermediate execution actions before producing a final natural-language response. PAB-F models those choices as a safe contextual bandit problem: each request creates a context, the agent filters unsafe or infeasible actions, selects one orchestration action, and observes partial feedback only for that selected action.</p>
+            <p>The action is factorized as <span class="inline-math">a = (m, τ, s)</span>, where <span class="inline-math">m</span> is memory mode, <span class="inline-math">τ</span> is tool mode, and <span class="inline-math">s</span> is answer behavior or style. Factorization lets feedback from one memory-tool-style action update reusable components instead of treating every action triple as an unrelated arm.</p>
+          </div>
+          <aside class="equation-card" aria-label="Expected feedback model">
+            <p class="equation">E[y | c,a] = b(c,a) + φ(c,a)<sup>T</sup>θ - λ cost(c,a)</p>
+            <div class="term-list">
+              <div>
+                <span>b(c,a)</span>
+                <p>Default system behavior and rule-based orchestration utility.</p>
+              </div>
+              <div>
+                <span>φ(c,a)<sup>T</sup>θ</span>
+                <p>User-specific residual preference learned online.</p>
+              </div>
+              <div>
+                <span>λ cost(c,a)</span>
+                <p>Explicit penalty for latency, tools, clarification, or verbosity.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="method" class="section band">
+        <div class="section-heading">
+          <p class="eyebrow">Method</p>
+          <h2>Safe factorized residual learning</h2>
+          <p>PAB-F is designed as an orchestration plugin for a larger assistant runtime. The host agent still executes memory retrieval, tool calls, clarification, and final response generation.</p>
+        </div>
+        <div class="card-grid three">
+          <article class="card">
+            <span class="card-kicker">1</span>
+            <h3>Safe action layer</h3>
+            <p>Filters actions by hard constraints such as memory permissions, available tools, risk level, and confirmation requirements. Exploration only happens inside the safe set.</p>
+          </article>
+          <article class="card">
+            <span class="card-kicker">2</span>
+            <h3>Factorized Thompson sampling</h3>
+            <p>Scores safe actions using default utility, sampled user residual preference, and explicit cost while sharing signal across memory, tool, and answer-style components.</p>
+          </article>
+          <article class="card">
+            <span class="card-kicker">3</span>
+            <h3>Preference promotion</h3>
+            <p>When posterior confidence and evidence are high, stable learned preferences can be written into memory or prompt policy as interpretable state.</p>
+          </article>
+        </div>
+
+        <div class="factor-panel">
+          <div>
+            <h3>Representative factorized action space</h3>
+            <p>The current paper uses five memory modes, six tool modes, and six answer styles, producing 180 combinations before safety constraints.</p>
+          </div>
+          <dl class="factor-list">
+            <div>
+              <dt>Memory</dt>
+              <dd>no memory, recent memory, semantic memory, preference memory, profile summary</dd>
+            </div>
+            <div>
+              <dt>Tools</dt>
+              <dd>no tool, web search, file search, code execution, preference checker, ask user</dd>
+            </div>
+            <div>
+              <dt>Styles</dt>
+              <dd>direct, concise, detailed, step-by-step, ask clarification, confirm first</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section id="algorithm" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Algorithm</p>
+          <h2>Online personalization loop</h2>
+          <p>The loop residualizes feedback against default behavior and explicit cost, then updates a Bayesian posterior over user-specific orchestration preferences.</p>
+        </div>
+        <figure class="flow-figure">
+          <!-- Mermaid source is kept in assets/img/pabf-flow.mmd for regeneration. -->
+          <img src="assets/img/pabf-flow.svg" alt="Flowchart of PAB-F: context construction, safe action filtering, Thompson sampling over factorized memory-tool-style actions, execution, feedback, Bayesian update, and preference promotion.">
+          <figcaption>PAB-F selects a safe orchestration action, observes feedback, updates the residual preference posterior, and optionally promotes stable preferences into agent memory or prompt policy.</figcaption>
+        </figure>
+      </section>
+
+      <section id="results" class="section band">
+        <div class="section-heading">
+          <p class="eyebrow">Results</p>
+          <h2>Current experiment summaries</h2>
+          <p>These results are preliminary and should be read as early evidence about orchestration behavior, not as a state-of-the-art claim. Some baselines or ablations win individual metrics.</p>
+        </div>
+
+        <div class="results-block">
+          <div class="block-heading">
+            <div>
+              <p class="eyebrow">PAHF orchestration benchmark</p>
+              <h3>Heldout success and behavior</h3>
+            </div>
+            <a class="text-link" href="assets/data/pahf-results.json">PAHF JSON</a>
+          </div>
+
+          <div class="setup-grid">
+            <div><span>Benchmarks</span>PAHF-Embodied Manipulation and PAHF-Online Shopping</div>
+            <div><span>Users</span>20 synthetic personas</div>
+            <div><span>Rounds</span>30 per user, 80% online / 20% heldout</div>
+            <div><span>Action space</span>|M| = 5, |T| = 6, |S| = 6, 180 combinations before safety</div>
+            <div><span>Cost / noise</span>λ = 1.0, σ = 0.05</div>
+            <div><span>Stress test</span>Preference drift introduced at round 15</div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>PAHF-Embodied success</span>
+              <strong>0.055 → 0.078</strong>
+              <p>Rule-only to PAB-F full, +42% relative change.</p>
+            </article>
+            <article class="metric-card">
+              <span>PAHF-Shopping success</span>
+              <strong>0.077 → 0.133</strong>
+              <p>Rule-only to PAB-F full, +74% relative change.</p>
+            </article>
+            <article class="metric-card">
+              <span>Clarification rate</span>
+              <strong>37.7% → 3.3%</strong>
+              <p>Average clarification behavior across the two PAHF sub-benchmarks.</p>
+            </article>
+            <article class="metric-card">
+              <span>PAB-F full component accuracy</span>
+              <strong>M 0.295 · T 0.314 · S 0.373</strong>
+              <p>Average memory, tool, and style component accuracy.</p>
+            </article>
+          </div>
+
+          <div class="chart-grid">
+            <div class="chart-card">
+              <div class="chart-heading">
+                <h4>Heldout success</h4>
+                <p>Rule-only vs. PAB-F full</p>
+              </div>
+              <div id="pahf-success-chart" class="chart" role="img" aria-label="Grouped bar chart comparing PAHF heldout success for Rule-Only and PAB-F full."></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-heading">
+                <h4>Clarification avoidance</h4>
+                <p>Average across PAHF sub-benchmarks</p>
+              </div>
+              <div id="clarification-chart" class="chart" role="img" aria-label="Bar chart comparing clarification rate for Rule-Only and PAB-F full."></div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <caption>PAHF heldout metrics. Reward, success, and regret capture different aspects of behavior; Global LinTS has the highest heldout reward in this stationary table.</caption>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Embodied reward</th>
+                  <th>Embodied success</th>
+                  <th>Embodied regret</th>
+                  <th>Shopping reward</th>
+                  <th>Shopping success</th>
+                  <th>Shopping regret</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Rule-Only</td><td>0.3216</td><td>0.055</td><td>0.7551</td><td>-0.5893</td><td>0.077</td><td>0.7149</td></tr>
+                <tr><td>Global LinTS</td><td>0.7574</td><td>0.005</td><td>0.8700</td><td>0.6287</td><td>0.040</td><td>0.7917</td></tr>
+                <tr><td>Per-User LinTS</td><td>0.5866</td><td>0.023</td><td>0.8924</td><td>0.4612</td><td>0.010</td><td>0.9766</td></tr>
+                <tr><td>Non-Factorized LinTS</td><td>0.6440</td><td>0.020</td><td>0.9296</td><td>0.1896</td><td>0.012</td><td>0.8863</td></tr>
+                <tr><td>PAB-F (no onboarding)</td><td>0.6470</td><td>0.052</td><td>0.9872</td><td>0.4432</td><td>0.082</td><td>0.8893</td></tr>
+                <tr><td>PAB-F (no promotion)</td><td>0.5799</td><td>0.132</td><td>0.5422</td><td>0.3542</td><td>0.032</td><td>0.7302</td></tr>
+                <tr><td>PAB-F (no cost)</td><td>0.5801</td><td>0.078</td><td>0.6043</td><td>0.4223</td><td>0.023</td><td>0.7694</td></tr>
+                <tr><td>PAB-F (full)</td><td>0.6214</td><td>0.078</td><td>0.6639</td><td>0.5193</td><td>0.133</td><td>0.6863</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap compact">
+            <table>
+              <caption>PAHF component accuracy over memory (M), tool (T), and style (S).</caption>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Embodied M</th>
+                  <th>Embodied T</th>
+                  <th>Embodied S</th>
+                  <th>Shopping M</th>
+                  <th>Shopping T</th>
+                  <th>Shopping S</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Rule-Only</td><td>0.337</td><td>0.265</td><td>0.302</td><td>0.292</td><td>0.282</td><td>0.270</td></tr>
+                <tr><td>Global LinTS</td><td>0.202</td><td>0.233</td><td>0.052</td><td>0.245</td><td>0.217</td><td>0.230</td></tr>
+                <tr><td>Per-User LinTS</td><td>0.197</td><td>0.198</td><td>0.213</td><td>0.328</td><td>0.115</td><td>0.137</td></tr>
+                <tr><td>Non-Factorized</td><td>0.168</td><td>0.243</td><td>0.160</td><td>0.278</td><td>0.273</td><td>0.192</td></tr>
+                <tr><td>PAB-F (no onboarding)</td><td>0.172</td><td>0.208</td><td>0.142</td><td>0.253</td><td>0.190</td><td>0.130</td></tr>
+                <tr><td>PAB-F (no promotion)</td><td>0.313</td><td>0.360</td><td>0.480</td><td>0.268</td><td>0.308</td><td>0.260</td></tr>
+                <tr><td>PAB-F (no cost)</td><td>0.203</td><td>0.295</td><td>0.355</td><td>0.347</td><td>0.157</td><td>0.287</td></tr>
+                <tr><td>PAB-F (full)</td><td>0.182</td><td>0.322</td><td>0.432</td><td>0.408</td><td>0.305</td><td>0.313</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap compact">
+            <table>
+              <caption>Clarification and correction rates. PAB-F full greatly reduces clarification compared with rule-only, while correction behavior remains a separate tradeoff.</caption>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Embodied clarify</th>
+                  <th>Embodied correct</th>
+                  <th>Shopping clarify</th>
+                  <th>Shopping correct</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Rule-Only</td><td>0.348</td><td>0.000</td><td>0.405</td><td>0.042</td></tr>
+                <tr><td>PAB-F (no onboarding)</td><td>0.047</td><td>0.098</td><td>0.000</td><td>0.078</td></tr>
+                <tr><td>PAB-F (no promotion)</td><td>0.093</td><td>0.117</td><td>0.000</td><td>0.105</td></tr>
+                <tr><td>PAB-F (no cost)</td><td>0.075</td><td>0.158</td><td>0.000</td><td>0.045</td></tr>
+                <tr><td>PAB-F (full)</td><td>0.067</td><td>0.188</td><td>0.000</td><td>0.070</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap compact">
+            <table>
+              <caption>Preliminary drift stress test. Recovery metrics are mixed, indicating a need for stronger non-stationary evaluation.</caption>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Embodied recovery</th>
+                  <th>Embodied post success</th>
+                  <th>Embodied post reward</th>
+                  <th>Shopping recovery</th>
+                  <th>Shopping post success</th>
+                  <th>Shopping post reward</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Rule-Only</td><td>249</td><td>0.067</td><td>0.3189</td><td>184</td><td>0.079</td><td>-0.5819</td></tr>
+                <tr><td>PAB-F (no onboarding)</td><td>484</td><td>0.051</td><td>0.5422</td><td>636</td><td>0.026</td><td>0.3145</td></tr>
+                <tr><td>PAB-F (no promotion)</td><td>303</td><td>0.063</td><td>0.4799</td><td>544</td><td>0.036</td><td>0.3037</td></tr>
+                <tr><td>PAB-F (no cost)</td><td>96</td><td>0.094</td><td>0.4634</td><td>312</td><td>0.058</td><td>0.2802</td></tr>
+                <tr><td>PAB-F (full)</td><td>487</td><td>0.068</td><td>0.4810</td><td>572</td><td>0.060</td><td>0.3063</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="results-block">
+          <div class="block-heading">
+            <div>
+              <p class="eyebrow">Math500 personalized reasoning pilot</p>
+              <h3>Alignment, accuracy, reward, and runtime</h3>
+            </div>
+            <a class="text-link" href="assets/data/math500-results.json">Math500 JSON</a>
+          </div>
+
+          <div class="setup-grid">
+            <div><span>Data generation</span>PrefDisco-style synthetic user construction</div>
+            <div><span>User record</span>Persona, local preferences, and evaluation rubric</div>
+            <div><span>Criterion levels</span>Scores in {1, 3, 5}</div>
+            <div><span>Training / heldout</span>5 training examples, 20 heldout test examples, 10 training rounds</div>
+            <div><span>Models</span>deepseek-v4-flash answer model, deepseek-v4-pro judge model</div>
+            <div><span>Reward</span>0.5 accuracy + 0.5 preference alignment</div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>Direct → Direct-Pref alignment</span>
+              <strong>0.5077 → 0.6415</strong>
+              <p>User information improves alignment in the direct setting.</p>
+            </article>
+            <article class="metric-card">
+              <span>Direct → PABF alignment</span>
+              <strong>0.5077 → 0.6077</strong>
+              <p>PABF improves alignment over the direct baseline.</p>
+            </article>
+            <article class="metric-card">
+              <span>Best alignment</span>
+              <strong>0.7246</strong>
+              <p>PABF-NoCost, an ablation without the online response-cost penalty.</p>
+            </article>
+            <article class="metric-card">
+              <span>PABF vs Rule-Only</span>
+              <strong>0.8000 accuracy</strong>
+              <p>Same accuracy; slightly higher alignment and reward.</p>
+            </article>
+          </div>
+
+          <div class="chart-grid">
+            <div class="chart-card">
+              <div class="chart-heading">
+                <h4>Preference alignment</h4>
+                <p>All Math500 pilot methods</p>
+              </div>
+              <div id="math-alignment-chart" class="chart" role="img" aria-label="Bar chart comparing Math500 preference alignment across methods."></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-heading">
+                <h4>Reward and time</h4>
+                <p>Runtime overhead remains visible</p>
+              </div>
+              <div id="math-time-chart" class="chart" role="img" aria-label="Scatter chart comparing Math500 reward and time across methods."></div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <caption>Math500 personalized reasoning pilot. PABF-NoCost has the strongest alignment and reward, but removes the online response-cost penalty; adaptive methods are slower in this run.</caption>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Accuracy</th>
+                  <th>Alignment</th>
+                  <th>Reward</th>
+                  <th>Time (s)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Direct</td><td>0.7000</td><td>0.5077</td><td>0.6038</td><td>56.9947</td></tr>
+                <tr><td>Direct-Pref</td><td>0.7500</td><td>0.6415</td><td>0.6958</td><td>58.8782</td></tr>
+                <tr><td>Rule-Only</td><td>0.8000</td><td>0.6046</td><td>0.7023</td><td>269.2286</td></tr>
+                <tr><td>PABF</td><td>0.8000</td><td>0.6077</td><td>0.7038</td><td>297.1829</td></tr>
+                <tr><td>PABF-NoCost</td><td>0.7000</td><td>0.7246</td><td>0.7123</td><td>298.1631</td></tr>
+                <tr><td>PABF-Onboarding</td><td>0.6000</td><td>0.7123</td><td>0.6562</td><td>282.3171</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="limitations" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Limitations</p>
+          <h2>Limitations and next steps</h2>
+        </div>
+        <div class="card-grid two">
+          <article class="card">
+            <h3>Numerical stability</h3>
+            <p>Thompson sampling with multivariate Gaussian sampling can fail if posterior covariance becomes ill-conditioned, especially when hard constraints permanently block some feature directions. Future fixes include covariance regularization, diagonal jitter, Cholesky fallback, or low-rank/diagonal posterior options.</p>
+          </article>
+          <article class="card">
+            <h3>Preference promotion precision</h3>
+            <p>With only 30 rounds per user in PAHF, few preferences may reach the promotion threshold. Future work should use calibrated thresholds, more evidence, hierarchical sharing, or confidence intervals tailored to sparse evidence.</p>
+          </article>
+          <article class="card">
+            <h3>Non-stationary coverage</h3>
+            <p>Current runs cover stationary and single-drift scenarios. Future evaluations should include continuous persona evolution and stochastic preference drift.</p>
+          </article>
+          <article class="card">
+            <h3>Runtime overhead</h3>
+            <p>Math500 adaptive methods are substantially slower than Direct and Direct-Pref in the current pilot. Caching, smaller candidate sets, cheaper judges, and async evaluation are natural next steps.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="citation" class="section citation-section">
+        <div class="section-heading">
+          <p class="eyebrow">Citation</p>
+          <h2>BibTeX</h2>
+        </div>
+        <div class="citation-box">
+          <pre id="bibtex"><code>@misc{pabf2026,
+  title  = {Personalized Agent Bandits with Factorized Orchestration Actions},
+  author = {Authors to be added},
+  year   = {2026},
+  note   = {Manuscript}
+}</code></pre>
+          <button class="copy-button" type="button" data-copy-target="bibtex">Copy BibTeX</button>
+          <span class="copy-status" aria-live="polite"></span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Personalized Agent Bandits with Factorized Orchestration Actions · Manuscript project page.</p>
+      <p>Results are preliminary and should be updated as PAHF and Math500 experiments evolve.</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
