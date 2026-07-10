@@ -1,0 +1,870 @@
+{
+  "provenance": {
+    "kind": "LLM-live PABLO trajectory with PAHF-style synthetic-persona feedback",
+    "host_model": "deepseek-v4-flash",
+    "host_base_url": "https://api.deepseek.com/v1",
+    "seed": 17,
+    "note": "Agent answers are live LLM calls. The product catalog, preference checker, and synthetic-persona feedback are local deterministic fixtures so feedback remains reproducible. Trace writing fails closed if an agent answer cannot be parsed or if feedback does not match its judge record."
+  },
+  "persona": {
+    "description": "A recreational runner who values fit and concise recommendations.",
+    "preferences": [
+      "Prefer a wide toe box.",
+      "Prefer low-drop shoes for road running.",
+      "Prefer concise recommendations with at most two options.",
+      "For wet trail requests, prioritize grip over road speed."
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "round_id": "round_1_cold_start",
+      "request": "I am training for a 10K. Pick one shoe from the catalog for my next road run.",
+      "action": {
+        "memory_mode": "no_memory",
+        "information_mode": "no_acquisition",
+        "presentation_mode": "detailed"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "road_shoe_selection",
+        "risk": 0.12,
+        "ambiguity": 0.62,
+        "memory_need": 0.18,
+        "tool_need": 0.45,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_1_cold_start",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [],
+      "retrieved_memory": [],
+      "tool_result": null,
+      "agent_output": {
+        "chosen_product": "terra_flow",
+        "final_response": "I recommend the Terra Flow for your 10K training. It's a lightweight road shoe with a wide toe box for comfort and a 4mm drop that encourages a natural stride. The moderate grip suits road running well.",
+        "reason": "Best fit for road running with lightweight design and wide toe box for comfort during training; low drop is suitable for building efficiency."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"terra_flow\",\n  \"final_response\": \"I recommend the Terra Flow for your 10K training. It's a lightweight road shoe with a wide toe box for comfort and a 4mm drop that encourages a natural stride. The moderate grip suits road running well.\",\n  \"reason\": \"Best fit for road running with lightweight design and wide toe box for comfort during training; low drop is suitable for building efficiency.\"\n}",
+      "agent_latency_seconds": 3.9592132568359375,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 3.9592132568359375
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": 1,
+        "user_feedback": "This matches my running context and gives me the right amount of detail.",
+        "reason": "correct product and acceptable response style"
+      },
+      "judge_text": "{\"reward\": 1, \"user_feedback\": \"This matches my running context and gives me the right amount of detail.\", \"reason\": \"correct product and acceptable response style\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": 1.0,
+      "orchestration_cost": 0.03,
+      "bandit_feedback": 0.9895,
+      "user_feedback": "This matches my running context and gives me the right amount of detail.",
+      "preference_update": "I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+      "feedback_event": "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+      "posterior_before": [
+        {
+          "feature": "memory_need*preference_memory",
+          "value": 0.08
+        },
+        {
+          "feature": "tool_need*host_api_tool",
+          "value": 0.08
+        },
+        {
+          "feature": "memory_need*profile_summary",
+          "value": 0.06
+        },
+        {
+          "feature": "ambiguity*clarify_user",
+          "value": 0.05
+        },
+        {
+          "feature": "ambiguity*step_by_step",
+          "value": 0.04
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "memory_need",
+          "value": 1.84
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": 1.84
+        },
+        {
+          "feature": "tool_need",
+          "value": 1.591695501730104
+        },
+        {
+          "feature": "tool_need*no_acquisition",
+          "value": 1.591695501730104
+        },
+        {
+          "feature": "risk",
+          "value": 1.5333333333333334
+        },
+        {
+          "feature": "ambiguity",
+          "value": 1.2904977375565612
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "round_id": "round_2_reuse_preference",
+      "request": "I have interval training tomorrow. Which one should I take? Give me the answer directly.",
+      "action": {
+        "memory_mode": "preference_memory",
+        "information_mode": "no_acquisition",
+        "presentation_mode": "detailed"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "road_shoe_selection",
+        "risk": 0.12,
+        "ambiguity": 0.3,
+        "memory_need": 0.92,
+        "tool_need": 0.62,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_2_reuse_preference",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that."
+      ],
+      "retrieved_memory": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that."
+      ],
+      "tool_result": null,
+      "agent_output": {
+        "chosen_product": "terra_flow",
+        "final_response": "For your interval training tomorrow, I recommend the Terra Flow. It's a lightweight road shoe with a low 4mm drop and wide toe box, matching your preference for low-drop road shoes and wide forefoot. It's ideal for speed work on roads.",
+        "reason": "Terra Flow is a road shoe with low drop (4mm), wide toe box, and light weight, aligning with the user's stored preference and suitability for interval training."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"terra_flow\",\n  \"final_response\": \"For your interval training tomorrow, I recommend the Terra Flow. It's a lightweight road shoe with a low 4mm drop and wide toe box, matching your preference for low-drop road shoes and wide forefoot. It's ideal for speed work on roads.\",\n  \"reason\": \"Terra Flow is a road shoe with low drop (4mm), wide toe box, and light weight, aligning with the user's stored preference and suitability for interval training.\"\n}",
+      "agent_latency_seconds": 4.091991901397705,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 4.091991901397705
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": 1,
+        "user_feedback": "This matches my running context and gives me the right amount of detail.",
+        "reason": "correct product and acceptable response style"
+      },
+      "judge_text": "{\"reward\": 1, \"user_feedback\": \"This matches my running context and gives me the right amount of detail.\", \"reason\": \"correct product and acceptable response style\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": 1.0,
+      "orchestration_cost": 0.08,
+      "bandit_feedback": 0.972,
+      "user_feedback": "This matches my running context and gives me the right amount of detail.",
+      "preference_update": "For future recommendations, keep the answer short: no long explanation and no more than two options.",
+      "feedback_event": "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+      "posterior_before": [
+        {
+          "feature": "memory_need",
+          "value": 1.84
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": 1.84
+        },
+        {
+          "feature": "tool_need",
+          "value": 1.591695501730104
+        },
+        {
+          "feature": "tool_need*no_acquisition",
+          "value": 1.591695501730104
+        },
+        {
+          "feature": "risk",
+          "value": 1.5333333333333334
+        },
+        {
+          "feature": "ambiguity",
+          "value": 1.2904977375565612
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "risk",
+          "value": 2.2194444444444446
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": 1.84
+        },
+        {
+          "feature": "ambiguity",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "tool_need",
+          "value": 1.2945849495733126
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "round_id": "round_3_style_learning",
+      "request": "I need one shoe for an easy road run this weekend. What do you recommend?",
+      "action": {
+        "memory_mode": "no_memory",
+        "information_mode": "no_acquisition",
+        "presentation_mode": "detailed"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "road_shoe_selection",
+        "risk": 0.12,
+        "ambiguity": 0.28,
+        "memory_need": 0.88,
+        "tool_need": 0.6,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_3_style_learning",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options."
+      ],
+      "retrieved_memory": [],
+      "tool_result": null,
+      "agent_output": {
+        "chosen_product": "daily_cushion",
+        "final_response": "I recommend the Daily Cushion for an easy road run - it offers a wide toe box and moderate cushioning for comfort.",
+        "reason": "Designed for road running with ample cushioning and a wide toe box, ideal for easy runs."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"daily_cushion\",\n  \"final_response\": \"I recommend the Daily Cushion for an easy road run - it offers a wide toe box and moderate cushioning for comfort.\",\n  \"reason\": \"Designed for road running with ample cushioning and a wide toe box, ideal for easy runs.\"\n}",
+      "agent_latency_seconds": 4.078181982040405,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 4.078181982040405
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": -1,
+        "user_feedback": "This does not match my stored fit and surface preferences.",
+        "reason": "wrong product for the synthetic persona and current task"
+      },
+      "judge_text": "{\"reward\": -1, \"user_feedback\": \"This does not match my stored fit and surface preferences.\", \"reason\": \"wrong product for the synthetic persona and current task\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": -1.0,
+      "orchestration_cost": 0.03,
+      "bandit_feedback": -1.0,
+      "user_feedback": "This does not match my stored fit and surface preferences.",
+      "preference_update": null,
+      "feedback_event": "This does not match my stored fit and surface preferences.",
+      "posterior_before": [
+        {
+          "feature": "risk",
+          "value": 2.2194444444444446
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": 1.84
+        },
+        {
+          "feature": "ambiguity",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 1.454511278195489
+        },
+        {
+          "feature": "tool_need",
+          "value": 1.2945849495733126
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "risk",
+          "value": 0.7244047619047619
+        },
+        {
+          "feature": "memory_need*preference_memory",
+          "value": 0.6950973451327433
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "round_id": "round_4_preference_drift",
+      "request": "This weekend I will run on wet trails instead of the road. Pick one shoe from the same catalog.",
+      "action": {
+        "memory_mode": "preference_memory",
+        "information_mode": "preference_checker",
+        "presentation_mode": "detailed"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "wet_trail_selection",
+        "risk": 0.12,
+        "ambiguity": 0.36,
+        "memory_need": 0.84,
+        "tool_need": 0.72,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_4_preference_drift",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences."
+      ],
+      "retrieved_memory": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences."
+      ],
+      "tool_result": {
+        "tool": "preference_checker",
+        "checked_preferences": [],
+        "compatible_products": [
+          {
+            "product_id": "ridge_grip",
+            "compatibility_score": 4
+          },
+          {
+            "product_id": "daily_cushion",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "terra_flow",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "stride_one",
+            "compatibility_score": 0
+          }
+        ]
+      },
+      "agent_output": {
+        "chosen_product": "ridge_grip",
+        "final_response": "For wet trails, the Ridge Grip is your best choice. It's the only trail shoe with high grip and a wide toe box, ideal for traction on wet surfaces. It has a 5mm drop and medium weight, balancing stability and comfort.",
+        "reason": "Ridge Grip is the only trail shoe in the catalog, with high grip suitable for wet conditions and a wide toe box matching stored fit preferences."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"ridge_grip\",\n  \"final_response\": \"For wet trails, the Ridge Grip is your best choice. It's the only trail shoe with high grip and a wide toe box, ideal for traction on wet surfaces. It has a 5mm drop and medium weight, balancing stability and comfort.\",\n  \"reason\": \"Ridge Grip is the only trail shoe in the catalog, with high grip suitable for wet conditions and a wide toe box matching stored fit preferences.\"\n}",
+      "agent_latency_seconds": 4.461704969406128,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 4.461704969406128
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": 1,
+        "user_feedback": "This matches my running context and gives me the right amount of detail.",
+        "reason": "correct product and acceptable response style"
+      },
+      "judge_text": "{\"reward\": 1, \"user_feedback\": \"This matches my running context and gives me the right amount of detail.\", \"reason\": \"correct product and acceptable response style\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": 1.0,
+      "orchestration_cost": 0.12,
+      "bandit_feedback": 0.958,
+      "user_feedback": "This matches my running context and gives me the right amount of detail.",
+      "preference_update": "For wet trails, grip matters more than road speed. Please use that preference for trail requests.",
+      "feedback_event": "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests.",
+      "posterior_before": [
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8137942332896463
+        },
+        {
+          "feature": "risk",
+          "value": 0.7244047619047619
+        },
+        {
+          "feature": "memory_need*preference_memory",
+          "value": 0.6950973451327433
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "risk",
+          "value": 1.1067708333333333
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*preference_checker",
+          "value": 0.8730769230769229
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 0.8137942332896463
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "round_id": "round_5_contextual_adaptation",
+      "request": "I have another rainy trail run tomorrow. Which shoe is the best match?",
+      "action": {
+        "memory_mode": "preference_memory",
+        "information_mode": "preference_checker",
+        "presentation_mode": "concise"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "wet_trail_selection",
+        "risk": 0.12,
+        "ambiguity": 0.22,
+        "memory_need": 0.94,
+        "tool_need": 0.75,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_5_contextual_adaptation",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests."
+      ],
+      "retrieved_memory": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests."
+      ],
+      "tool_result": {
+        "tool": "preference_checker",
+        "checked_preferences": [
+          "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests."
+        ],
+        "compatible_products": [
+          {
+            "product_id": "ridge_grip",
+            "compatibility_score": 4
+          },
+          {
+            "product_id": "daily_cushion",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "terra_flow",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "stride_one",
+            "compatibility_score": 0
+          }
+        ]
+      },
+      "agent_output": {
+        "chosen_product": "ridge_grip",
+        "final_response": "For rainy trail runs, the Ridge Grip offers high grip and a wide toe box, ideal for wet conditions.",
+        "reason": "Highest compatibility score (4) and matches trail surface with high grip, aligning with preference for wet trails."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"ridge_grip\",\n  \"final_response\": \"For rainy trail runs, the Ridge Grip offers high grip and a wide toe box, ideal for wet conditions.\",\n  \"reason\": \"Highest compatibility score (4) and matches trail surface with high grip, aligning with preference for wet trails.\"\n}",
+      "agent_latency_seconds": 3.4508659839630127,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 3.4508659839630127
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": 1,
+        "user_feedback": "This matches my running context and gives me the right amount of detail.",
+        "reason": "correct product and acceptable response style"
+      },
+      "judge_text": "{\"reward\": 1, \"user_feedback\": \"This matches my running context and gives me the right amount of detail.\", \"reason\": \"correct product and acceptable response style\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": 1.0,
+      "orchestration_cost": 0.1,
+      "bandit_feedback": 0.965,
+      "user_feedback": "This matches my running context and gives me the right amount of detail.",
+      "preference_update": null,
+      "feedback_event": "This matches my running context and gives me the right amount of detail.",
+      "posterior_before": [
+        {
+          "feature": "risk",
+          "value": 1.1067708333333333
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*preference_checker",
+          "value": 0.8730769230769229
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        },
+        {
+          "feature": "ambiguity*no_acquisition",
+          "value": 0.8137942332896463
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "risk",
+          "value": 1.362037037037037
+        },
+        {
+          "feature": "ambiguity*preference_checker",
+          "value": 1.0751697792869268
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.9513571790969052
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*concise",
+          "value": 0.8478301886792455
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "round_id": "round_6_return_to_road",
+      "request": "Next week I am back to 10K road training. Give me the best one-line recommendation.",
+      "action": {
+        "memory_mode": "preference_memory",
+        "information_mode": "preference_checker",
+        "presentation_mode": "step_by_step"
+      },
+      "safe_action_count": 16,
+      "context": {
+        "task_type": "road_shoe_selection",
+        "risk": 0.12,
+        "ambiguity": 0.18,
+        "memory_need": 0.93,
+        "tool_need": 0.68,
+        "user_or_persona_id": "live_demo_runner",
+        "hard_constraints": {
+          "allow_clarification": false,
+          "forbid_external_side_effects": true
+        },
+        "available_memory_modes": [
+          "no_memory",
+          "preference_memory"
+        ],
+        "available_information_modes": [
+          "no_acquisition",
+          "preference_checker"
+        ],
+        "benchmark": "pahf_live_demo",
+        "split": "demo",
+        "round_id": "round_6_return_to_road",
+        "metadata": {
+          "scenario": "live_llm_synthetic_persona",
+          "catalog_size": 4
+        }
+      },
+      "memory_before": [
+        "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests.",
+        "This matches my running context and gives me the right amount of detail."
+      ],
+      "retrieved_memory": [
+        "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options.",
+        "This does not match my stored fit and surface preferences.",
+        "This matches my running context and gives me the right amount of detail. Preference update: For wet trails, grip matters more than road speed. Please use that preference for trail requests.",
+        "This matches my running context and gives me the right amount of detail."
+      ],
+      "tool_result": {
+        "tool": "preference_checker",
+        "checked_preferences": [
+          "This matches my running context and gives me the right amount of detail. Preference update: I have a wide forefoot and I strongly prefer a low-drop road shoe. Please remember that.",
+          "This matches my running context and gives me the right amount of detail. Preference update: For future recommendations, keep the answer short: no long explanation and no more than two options."
+        ],
+        "compatible_products": [
+          {
+            "product_id": "terra_flow",
+            "compatibility_score": 3
+          },
+          {
+            "product_id": "daily_cushion",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "ridge_grip",
+            "compatibility_score": 1
+          },
+          {
+            "product_id": "stride_one",
+            "compatibility_score": 0
+          }
+        ]
+      },
+      "agent_output": {
+        "chosen_product": "terra_flow",
+        "final_response": "For your 10K road training, I recommend Terra Flow: low drop, wide toe box, and light weight for a fast, comfortable ride.",
+        "reason": "Terra Flow matches your preference for a low-drop, wide forefoot road shoe, and has the highest compatibility score from your preferences."
+      },
+      "agent_text": "{\n  \"chosen_product\": \"terra_flow\",\n  \"final_response\": \"For your 10K road training, I recommend Terra Flow: low drop, wide toe box, and light weight for a fast, comfortable ride.\",\n  \"reason\": \"Terra Flow matches your preference for a low-drop, wide forefoot road shoe, and has the highest compatibility score from your preferences.\"\n}",
+      "agent_latency_seconds": 3.3969879150390625,
+      "agent_validation": {
+        "valid": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "finish_reason": "stop",
+            "valid": true,
+            "validation_error": null,
+            "latency_seconds": 3.3969879150390625
+          }
+        ]
+      },
+      "judge_output": {
+        "reward": 1,
+        "user_feedback": "This matches my running context and gives me the right amount of detail.",
+        "reason": "correct product and acceptable response style"
+      },
+      "judge_text": "{\"reward\": 1, \"user_feedback\": \"This matches my running context and gives me the right amount of detail.\", \"reason\": \"correct product and acceptable response style\"}",
+      "judge_latency_seconds": 0.0,
+      "raw_persona_reward": 1.0,
+      "orchestration_cost": 0.13,
+      "bandit_feedback": 0.9545,
+      "user_feedback": "This matches my running context and gives me the right amount of detail.",
+      "preference_update": null,
+      "feedback_event": "This matches my running context and gives me the right amount of detail.",
+      "posterior_before": [
+        {
+          "feature": "risk",
+          "value": 1.362037037037037
+        },
+        {
+          "feature": "ambiguity*preference_checker",
+          "value": 1.0751697792869268
+        },
+        {
+          "feature": "ambiguity",
+          "value": 0.9513571790969052
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*concise",
+          "value": 0.8478301886792455
+        },
+        {
+          "feature": "memory_need*no_memory",
+          "value": -0.8157797316057382
+        }
+      ],
+      "posterior_after": [
+        {
+          "feature": "risk",
+          "value": 1.5895833333333331
+        },
+        {
+          "feature": "ambiguity*preference_checker",
+          "value": 1.2383582089552239
+        },
+        {
+          "feature": "ambiguity",
+          "value": 1.009527290448343
+        },
+        {
+          "feature": "ambiguity*step_by_step",
+          "value": 0.8986
+        },
+        {
+          "feature": "ambiguity*detailed",
+          "value": 0.8921351351351352
+        },
+        {
+          "feature": "ambiguity*concise",
+          "value": 0.8478301886792455
+        }
+      ]
+    }
+  ]
+}

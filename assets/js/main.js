@@ -12,6 +12,8 @@
     green: "#2f855a"
   };
   const chartFont = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  const FULL_POLICY_ID = "PAB-F (full)";
+  const FULL_POLICY_LABEL = "PABLO full";
 
   function escapeText(value) {
     return String(value)
@@ -23,6 +25,12 @@
 
   function pct(value, decimals) {
     return `${(value * 100).toFixed(decimals)}%`;
+  }
+
+  function roundedPct(value, decimals) {
+    const scale = 10 ** decimals;
+    const rounded = Math.round((value * 100 * scale) + Number.EPSILON) / scale;
+    return `${rounded.toFixed(decimals)}%`;
   }
 
   async function loadJson(path) {
@@ -45,10 +53,10 @@
     if (!el) return;
 
     const rule = data.heldout.find((row) => row.policy === "Rule-Only");
-    const full = data.heldout.find((row) => row.policy === "PAB-F (full)");
+    const full = data.heldout.find((row) => row.policy === FULL_POLICY_ID);
     const series = [
-      { label: "Embodied", rule: rule.embodied_success, full: full.embodied_success, change: "+42%" },
-      { label: "Shopping", rule: rule.shopping_success, full: full.shopping_success, change: "+74%" }
+      { label: "Embodied", rule: rule.embodied_success, full: full.embodied_success },
+      { label: "Shopping", rule: rule.shopping_success, full: full.shopping_success }
     ];
     const width = 640;
     const height = 280;
@@ -68,10 +76,9 @@
         <g>
           <rect x="${x - 58}" y="${ruleY}" width="${barW}" height="${ruleH}" rx="6" fill="${palette.tealSoft}"></rect>
           <rect x="${x + 10}" y="${fullY}" width="${barW}" height="${fullH}" rx="6" fill="${palette.teal}"></rect>
-          <text x="${x - 34}" y="${Math.max(ruleY - 8, 58)}" text-anchor="middle" class="chart-value">${item.rule.toFixed(3)}</text>
-          <text x="${x + 34}" y="${Math.max(fullY - 8, 58)}" text-anchor="middle" class="chart-value">${item.full.toFixed(3)}</text>
+          <text x="${x - 34}" y="${Math.max(ruleY - 8, 58)}" text-anchor="middle" class="chart-value">${pct(item.rule, 1)}</text>
+          <text x="${x + 34}" y="${Math.max(fullY - 8, 58)}" text-anchor="middle" class="chart-value">${pct(item.full, 1)}</text>
           <text x="${x}" y="252" text-anchor="middle" class="chart-label">${escapeText(item.label)}</text>
-          <text x="${x}" y="${Math.max(Math.min(ruleY, fullY) - 30, 42)}" text-anchor="middle" class="chart-note">${item.change}</text>
         </g>
       `;
     }).join("");
@@ -81,7 +88,6 @@
         <style>
           .chart-label{font:700 14px ${chartFont};fill:${palette.ink}}
           .chart-value{font:700 13px ${chartFont};fill:${palette.muted}}
-          .chart-note{font:800 13px ${chartFont};fill:${palette.coral}}
           .axis{stroke:${palette.line};stroke-width:1}
           .legend{font:700 13px ${chartFont};fill:${palette.muted}}
         </style>
@@ -92,7 +98,7 @@
         <rect x="400" y="15" width="14" height="14" rx="3" fill="${palette.tealSoft}"></rect>
         <text x="422" y="27" class="legend">Rule-only</text>
         <rect x="502" y="15" width="14" height="14" rx="3" fill="${palette.teal}"></rect>
-        <text x="524" y="27" class="legend">PAB-F full</text>
+        <text x="524" y="27" class="legend">${FULL_POLICY_LABEL}</text>
       </svg>
     `;
   }
@@ -103,10 +109,10 @@
 
     const rows = data.clarification_correction;
     const rule = rows.find((row) => row.policy === "Rule-Only");
-    const full = rows.find((row) => row.policy === "PAB-F (full)");
+    const full = rows.find((row) => row.policy === FULL_POLICY_ID);
     const values = [
       { label: "Rule-only", value: (rule.embodied_clarify + rule.shopping_clarify) / 2, color: palette.amber },
-      { label: "PAB-F full", value: (full.embodied_clarify + full.shopping_clarify) / 2, color: palette.teal }
+      { label: FULL_POLICY_LABEL, value: (full.embodied_clarify + full.shopping_clarify) / 2, color: palette.teal }
     ];
     const width = 640;
     const height = 280;
@@ -120,7 +126,7 @@
       return `
         <g>
           <rect x="${x - 44}" y="${y}" width="88" height="${h}" rx="8" fill="${item.color}"></rect>
-          <text x="${x}" y="${Math.max(y - 10, 52)}" text-anchor="middle" class="chart-value">${pct(item.value, 1)}</text>
+          <text x="${x}" y="${Math.max(y - 10, 52)}" text-anchor="middle" class="chart-value">${roundedPct(item.value, 1)}</text>
           <text x="${x}" y="252" text-anchor="middle" class="chart-label">${escapeText(item.label)}</text>
         </g>
       `;

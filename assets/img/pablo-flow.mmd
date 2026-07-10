@@ -1,0 +1,6 @@
+flowchart LR
+  A[Build context<br/>request + history] --> B[Apply deterministic constraints]
+  B --> C[Select factorized action<br/>memory, acquisition, presentation]
+  C --> D[Host agent executes]
+  D --> E[Observe partial feedback]
+  E --> F[Update per-user posterior]

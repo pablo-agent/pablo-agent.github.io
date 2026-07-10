@@ -1,7 +1,0 @@
-flowchart LR
-  A[Build context<br/>request + history] --> B[Filter unsafe actions]
-  B --> C[Select factorized action<br/>memory, tools, response]
-  C --> D[Host agent executes]
-  D --> E[Observe partial feedback]
-  E --> F[Update Bayesian preference model]
-  F --> G[Promote confident preferences]

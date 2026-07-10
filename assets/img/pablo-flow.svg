@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1780 310" role="img" aria-labelledby="title desc">
-  <title id="title">PAB-F algorithm flowchart</title>
-  <desc id="desc">A horizontal PAB-F flowchart with seven steps: build context, filter unsafe actions, select a factorized action, execute the host agent, observe feedback, update the Bayesian preference model, and promote confident preferences.</desc>
+  <title id="title">PABLO algorithm flowchart</title>
+  <desc id="desc">A horizontal PABLO flowchart: build context, apply deterministic constraints, select a factorized action, execute the host agent, observe partial feedback, and update a per-user posterior.</desc>
   <defs>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
       <path d="M2,2 L10,6 L2,10 Z" fill="#49647a"/>
@@ -21,65 +21,57 @@
     </style>
   </defs>
   <rect class="canvas" width="1780" height="310" rx="24"/>
-  <text x="46" y="44" class="tag">PAB-F ONLINE PERSONALIZATION LOOP</text>
+  <text x="46" y="44" class="tag">PABLO ONLINE PERSONALIZATION LOOP</text>
 
   <g transform="translate(44 82)">
-    <rect class="node" width="210" height="150" rx="16"/>
+    <rect class="node" width="218" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">1</text>
     <text class="label" x="24" y="82">Build context</text>
     <text class="small" x="24" y="112">request + history</text>
   </g>
-  <g transform="translate(300 82)">
-    <rect class="node" width="210" height="150" rx="16"/>
+  <g transform="translate(320 82)">
+    <rect class="node" width="218" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">2</text>
-    <text class="label" x="24" y="82">Enforce safety</text>
-    <text class="small" x="24" y="112">filter infeasible actions</text>
+    <text class="label" x="24" y="76">Apply constraints</text>
+    <text class="small" x="24" y="106">safety + mandatory</text>
+    <text class="small" x="24" y="130">confirmation</text>
   </g>
-  <g transform="translate(556 82)">
-    <rect class="node-accent" width="230" height="150" rx="16"/>
+  <g transform="translate(596 82)">
+    <rect class="node-accent" width="250" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">3</text>
     <text class="label" x="24" y="76">Select action</text>
-    <text class="small" x="24" y="106">memory · tools · response</text>
-    <text class="small" x="24" y="130">Thompson sampling</text>
+    <text class="small" x="24" y="106">memory · acquisition</text>
+    <text class="small" x="24" y="130">presentation · TS</text>
   </g>
-  <g transform="translate(832 82)">
-    <rect class="node" width="210" height="150" rx="16"/>
+  <g transform="translate(904 82)">
+    <rect class="node" width="218" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">4</text>
     <text class="label" x="24" y="82">Execute agent</text>
-    <text class="small" x="24" y="112">retrieve, call, respond</text>
+    <text class="small" x="24" y="112">retrieve, acquire, respond</text>
   </g>
-  <g transform="translate(1088 82)">
-    <rect class="node" width="210" height="150" rx="16"/>
+  <g transform="translate(1180 82)">
+    <rect class="node" width="218" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">5</text>
     <text class="label" x="24" y="82">Observe feedback</text>
     <text class="small" x="24" y="112">partial reward signal</text>
   </g>
-  <g transform="translate(1344 82)">
-    <rect class="node-accent" width="210" height="150" rx="16"/>
+  <g transform="translate(1456 82)">
+    <rect class="node-accent" width="280" height="150" rx="16"/>
     <circle class="step-ring" cx="28" cy="28" r="16"/>
     <text class="step" text-anchor="middle" x="28" y="34">6</text>
-    <text class="label" x="24" y="76">Update model</text>
-    <text class="small" x="24" y="106">residual preference</text>
-    <text class="small" x="24" y="130">posterior update</text>
-  </g>
-  <g transform="translate(1600 82)">
-    <rect class="node" width="136" height="150" rx="16"/>
-    <circle class="step-ring" cx="28" cy="28" r="16"/>
-    <text class="step" text-anchor="middle" x="28" y="34">7</text>
-    <text class="label" x="20" y="76">Promote</text>
-    <text class="small" x="20" y="106">confident</text>
-    <text class="small" x="20" y="130">preferences</text>
+    <text class="label" x="24" y="76">Update posterior</text>
+    <text class="small" x="24" y="106">per-user residual</text>
+    <text class="small" x="24" y="130">preference model</text>
   </g>
 
-  <path class="edge" d="M254 157 H300"/>
-  <path class="edge" d="M510 157 H556"/>
-  <path class="edge" d="M786 157 H832"/>
-  <path class="edge" d="M1042 157 H1088"/>
-  <path class="edge" d="M1298 157 H1344"/>
-  <path class="edge" d="M1554 157 H1600"/>
+  <path class="edge" d="M262 157 H320"/>
+  <path class="edge" d="M538 157 H596"/>
+  <path class="edge" d="M846 157 H904"/>
+  <path class="edge" d="M1122 157 H1180"/>
+  <path class="edge" d="M1398 157 H1456"/>
 </svg>
