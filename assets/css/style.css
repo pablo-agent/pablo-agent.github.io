@@ -419,6 +419,58 @@ h4 {
   font-size: 14px;
 }
 
+.demo-section {
+  max-width: var(--max);
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.demo-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.demo-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 8px 0 8px 24px;
+  border-left: 2px solid var(--teal);
+}
+
+.demo-meta div {
+  display: grid;
+  gap: 4px;
+}
+
+.demo-meta span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-meta strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.demo-meta .text-link {
+  margin-top: auto;
+}
+
 .results-block {
   margin-top: 46px;
 }
@@ -672,7 +724,8 @@ code {
   }
 
   .factor-panel,
-  .chart-grid {
+  .chart-grid,
+  .demo-grid {
     grid-template-columns: 1fr;
   }
 
@@ -769,6 +822,12 @@ code {
 
   .chart-heading p {
     text-align: left;
+  }
+
+  .demo-meta {
+    padding: 20px 0 0;
+    border-top: 2px solid var(--teal);
+    border-left: 0;
   }
 
   .metric-card span {

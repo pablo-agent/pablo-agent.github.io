@@ -17,6 +17,7 @@
       <nav class="nav" aria-label="Primary">
         <a href="#overview">Overview</a>
         <a href="#method">Method</a>
+        <a href="#demo">Demo</a>
         <a href="#results">Results</a>
         <a href="#citation">Citation</a>
       </nav>
@@ -128,6 +129,34 @@
           </div>
           <figcaption>At every interaction, PAB-F moves from context to a safe factorized decision, learns from feedback, and promotes only confident preferences.</figcaption>
         </figure>
+      </section>
+
+      <section id="demo" class="section demo-section">
+        <div class="section-heading">
+          <p class="eyebrow">Live demo</p>
+          <h2>One recorded personalization trajectory</h2>
+          <p>A six-round PAB-F run with live DeepSeek agent responses. The product catalog, preference checker, and persona feedback are deterministic fixtures so every decision can be replayed.</p>
+        </div>
+        <div class="demo-grid">
+          <video class="demo-video" controls preload="metadata" poster="assets/video/pabf-live-demo-poster.png">
+            <source src="assets/video/pabf-live-demo.mp4" type="video/mp4">
+          </video>
+          <aside class="demo-meta" aria-label="Demo run details">
+            <div>
+              <span>Trajectory</span>
+              <strong>6 live agent records</strong>
+            </div>
+            <div>
+              <span>Feedback</span>
+              <strong>4 / 6 positive</strong>
+            </div>
+            <div>
+              <span>Action shift</span>
+              <strong>memory + tool → concise reuse</strong>
+            </div>
+            <a class="text-link" href="assets/data/live-pabf-demo-trace.json">Trace JSON</a>
+          </aside>
+        </div>
       </section>
 
       <section id="results" class="section band">
