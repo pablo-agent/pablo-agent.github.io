@@ -111,14 +111,14 @@ h1 {
 
 h2 {
   margin: 0;
-  font-size: 36px;
+  font-size: 40px;
   line-height: 1.16;
   letter-spacing: 0;
 }
 
 h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1.24;
   letter-spacing: 0;
 }
@@ -210,14 +210,16 @@ h4 {
 .section-heading p:not(.eyebrow) {
   margin: 14px 0 0;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.65;
 }
 
 .overview-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 390px;
-  gap: 34px;
-  align-items: start;
+  max-width: 940px;
+}
+
+.overview-copy {
+  max-width: 860px;
 }
 
 .lead {
@@ -228,43 +230,63 @@ h4 {
 }
 
 .inline-math {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 0.95em;
+  font-family: Cambria, "Times New Roman", serif;
+  font-size: 1.04em;
 }
 
 .equation-card {
+  margin-top: 32px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--paper);
-  box-shadow: var(--shadow);
+  box-shadow: 0 12px 28px rgba(16, 42, 67, 0.07);
   overflow: hidden;
+}
+
+.equation-model {
+  padding: 22px 26px 24px;
+  background: #eff9f7;
+  border-bottom: 1px solid var(--line);
+}
+
+.equation-label {
+  margin: 0 0 7px;
+  color: var(--teal-dark);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .equation {
   margin: 0;
-  padding: 24px;
-  background: #102a43;
-  color: #fff;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 17px;
-  line-height: 1.45;
+  color: var(--ink);
+  font-family: Cambria, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .term-list {
   display: grid;
-  gap: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .term-list div {
-  padding: 18px 20px;
-  border-top: 1px solid var(--line);
+  padding: 18px 22px 20px;
+  border-left: 1px solid var(--line);
+}
+
+.term-list div:first-child {
+  border-left: 0;
 }
 
 .term-list span {
   display: block;
   color: var(--ink);
-  font-weight: 800;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-family: Cambria, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .term-list p {
@@ -316,6 +338,21 @@ h4 {
 .card p {
   margin: 12px 0 0;
   color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+#method .section-heading {
+  max-width: 760px;
+}
+
+#method .section-heading p:not(.eyebrow) {
+  max-width: 680px;
+}
+
+#method .card h3,
+#method .factor-panel h3 {
+  font-size: 25px;
 }
 
 .factor-panel {
@@ -360,14 +397,19 @@ h4 {
   margin: 0;
 }
 
-.flow-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
+.flow-viewport {
+  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--shadow);
+}
+
+.flow-viewport img {
+  display: block;
+  width: 100%;
+  min-width: 1040px;
+  height: auto;
 }
 
 .flow-figure figcaption {
@@ -429,13 +471,16 @@ h4 {
   margin: 22px 0;
 }
 
+.metric-grid.metric-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .metric-card {
   padding: 18px;
 }
 
 .metric-card span {
   display: block;
-  min-height: 44px;
   color: var(--muted);
   font-size: 13px;
   font-weight: 800;
@@ -446,7 +491,7 @@ h4 {
   display: block;
   margin-top: 6px;
   color: var(--ink);
-  font-size: 25px;
+  font-size: 28px;
   line-height: 1.2;
 }
 
@@ -626,7 +671,6 @@ code {
     font-size: 31px;
   }
 
-  .overview-grid,
   .factor-panel,
   .chart-grid {
     grid-template-columns: 1fr;
@@ -634,7 +678,8 @@ code {
 
   .card-grid.three,
   .setup-grid,
-  .metric-grid {
+  .metric-grid,
+  .metric-grid.metric-grid--three {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -663,6 +708,10 @@ code {
     font-size: 28px;
   }
 
+  h3 {
+    font-size: 22px;
+  }
+
   .tagline {
     font-size: 19px;
   }
@@ -683,8 +732,28 @@ code {
   .card-grid.three,
   .card-grid.two,
   .setup-grid,
-  .metric-grid {
+  .metric-grid,
+  .metric-grid.metric-grid--three,
+  .term-list {
     grid-template-columns: 1fr;
+  }
+
+  .equation-model {
+    padding: 20px;
+  }
+
+  .equation {
+    font-size: 24px;
+  }
+
+  .term-list div,
+  .term-list div:first-child {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .term-list div:first-child {
+    border-top: 0;
   }
 
   .factor-list div {
