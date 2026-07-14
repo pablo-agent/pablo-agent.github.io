@@ -13,7 +13,7 @@
   };
   const chartFont = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
   const FULL_POLICY_ID = "PAB-F (full)";
-  const FULL_POLICY_LABEL = "PABLO full";
+  const FULL_POLICY_LABEL = "FABLE full";
 
   function escapeText(value) {
     return String(value)
